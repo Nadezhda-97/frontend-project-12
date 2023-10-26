@@ -1,6 +1,10 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import {
+  BrowserRouter, Routes, Route,
+} from 'react-router-dom';
 import ErrorPage from './components/errorPage.jsx';
 import LoginPage from './components/loginPage.jsx';
+import ChatPage from './components/chatPage.jsx';
+import SignUpPage from './components/signUpPage.jsx';
 
 const App = () => (
   <BrowserRouter>
@@ -15,6 +19,8 @@ const App = () => (
           <Routes>
             <Route path="*" element={<ErrorPage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/" element={<ChatPage />} />
+            <Route path="/signup" element={<SignUpPage />} />
           </Routes>
         </div>
       </div>
