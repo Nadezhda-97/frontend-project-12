@@ -20,7 +20,6 @@ const schema = yup.object().shape({
 const LoginPage = () => {
   const auth = useAuth();
   const navigate = useNavigate();
-
   const inputRef = useRef(null);
 
   const [authFailed, setAuthFailed] = useState(false);
@@ -37,7 +36,7 @@ const LoginPage = () => {
       try {
         const response = await axios.post(routes.loginPath, values);
         auth.logIn(response.data.token, response.data.username);
-        navigate('/');
+        navigate(routes.chatPage);
       } catch (error) {
         if (error.isAxiosError && error.response.status === 401) {
           setAuthFailed(true);
