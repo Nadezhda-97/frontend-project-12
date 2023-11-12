@@ -1,15 +1,26 @@
 import { Provider } from 'react-redux';
+import ChatProvider from './context/ChatProvider.jsx';
+import AuthProvider from './context/AuthProvider.jsx';
 
 import store from './slices/index.js';
-import { ChatContext } from './context/index.jsx';
+import { actions as messagesActions } from './slices/messagesSlice.js';
+
 import App from './App.jsx';
 
-const init = () => (
-  <Provider store={store}>
-    <ChatContext.Provider>
-      <App />
-    </ChatContext.Provider>
-  </Provider>
-);
+const init = (socket) => {
+  socket.on('newMessage', (payload) => {
+    store.dispatch(messagesActions.addMessage(payload));
+  });
+
+  return (
+    <Provider store={store}>
+      <AuthProvider>
+        <ChatProvider socket={socket}>
+          <App />
+        </ChatProvider>
+      </AuthProvider>
+    </Provider>
+  );
+};
 
 export default init;

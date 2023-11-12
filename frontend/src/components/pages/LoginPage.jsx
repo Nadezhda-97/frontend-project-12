@@ -9,8 +9,8 @@ import {
 } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 
-import { useAuth } from '../hooks/index.jsx';
-import routes from '../routes/routes.js';
+import { useAuth } from '../../hooks/index.jsx';
+import routes from '../../routes/routes.js';
 
 const schema = yup.object().shape({
   username: yup.string().trim().required(),
@@ -34,8 +34,8 @@ const LoginPage = () => {
       setAuthFailed(false);
 
       try {
-        const response = await axios.post(routes.loginPath, values);
-        auth.logIn(response.data.token, response.data.username);
+        const { data } = await axios.post(routes.loginPath, values);
+        auth.logIn(data);
         navigate(routes.chatPage);
       } catch (error) {
         if (error.isAxiosError && error.response.status === 401) {
