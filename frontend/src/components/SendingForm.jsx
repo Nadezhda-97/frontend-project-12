@@ -8,7 +8,7 @@ import { useFormik } from 'formik';
 import { useChatContext } from '../hooks/index.jsx';
 
 const schema = yup.object().shape({
-  message: yup.string().trim().required(),
+  message: yup.string().trim().required('Обязательное поле'),
 });
 
 const SendingForm = ({ currentChannelId }) => {
@@ -23,11 +23,11 @@ const SendingForm = ({ currentChannelId }) => {
     initialValues: {
       message: '',
     },
-    schema,
+    validationSchema: schema,
     onSubmit: async (values, { setSubmitting, resetForm }) => {
       try {
         await addMessage(values);
-        setSubmitting(false);
+        setSubmitting(true);
         resetForm();
       } catch (error) {
         setSubmitting(false);
@@ -51,7 +51,7 @@ const SendingForm = ({ currentChannelId }) => {
             value={formik.values.message}
             ref={inputRef}
           />
-          <Button type="submit" disabled={formik.isSubmitting} className="btn btn-group-vertical">
+          <Button type="submit" disabled={formik.isSubmitting} className="btn-group-vertical">
             <ArrowRightSquareFill size={20} />
             <span className="visually-hidden">Отправить</span>
           </Button>

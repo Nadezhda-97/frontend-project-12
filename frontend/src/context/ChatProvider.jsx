@@ -18,7 +18,21 @@ const ChatProvider = ({ socket, children }) => {
     await socket.emit('newMessage', messageData);
   };
 
-  const value = useMemo(() => ({ addMessage }), [addMessage]);
+  const addChannel = async ({ name }) => {
+    await socket.emit('newChannel', { name });
+  };
+
+  const renameChannel = async ({ id, name }) => {
+    await socket.emit('renameChannel', { id, name });
+  };
+
+  const removeChannel = async (id) => {
+    await socket.emit('removeChannel', { id });
+  };
+
+  const value = useMemo(() => ({
+    addMessage, addChannel, renameChannel, removeChannel,
+  }), [addMessage, addChannel, renameChannel, removeChannel]);
 
   return (
     <ChatContext.Provider value={value}>

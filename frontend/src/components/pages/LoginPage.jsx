@@ -1,7 +1,3 @@
-import { useFormik } from 'formik';
-import axios from 'axios';
-import * as yup from 'yup';
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
@@ -9,12 +5,16 @@ import {
 } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 
+import { useFormik } from 'formik';
+import axios from 'axios';
+import * as yup from 'yup';
+
 import { useAuth } from '../../hooks/index.jsx';
 import routes from '../../routes/routes.js';
 
 const schema = yup.object().shape({
-  username: yup.string().trim().required(),
-  password: yup.string().trim().required(),
+  username: yup.string().trim().required('Обязательное поле'),
+  password: yup.string().trim().required('Обязательное поле'),
 });
 
 const LoginPage = () => {
@@ -29,8 +29,8 @@ const LoginPage = () => {
       username: '',
       password: '',
     },
-    schema,
-    onSubmit: async (values) => {
+    validationSchema: schema,
+    onSubmit: async (values, { setSubmitting }) => {
       setAuthFailed(false);
 
       try {
@@ -38,6 +38,7 @@ const LoginPage = () => {
         auth.logIn(data);
         navigate(routes.chatPage);
       } catch (error) {
+        setSubmitting(false);
         if (error.isAxiosError && error.response.status === 401) {
           setAuthFailed(true);
           inputRef.current.select();
@@ -78,6 +79,7 @@ const LoginPage = () => {
                     value={formik.values.username}
                     onChange={formik.handleChange}
                     isInvalid={authFailed}
+                    disabled={formik.isSubmitting}
                   />
                 </FloatingLabel>
                 <FloatingLabel className="mb-4" controlId="password" label="Пароль">
@@ -89,6 +91,7 @@ const LoginPage = () => {
                     value={formik.values.password}
                     onChange={formik.handleChange}
                     isInvalid={authFailed}
+                    disabled={formik.isSubmitting}
                   />
                   <Form.Control.Feedback type="invalid" tooltip>
                     Неверные имя пользователя или пароль
