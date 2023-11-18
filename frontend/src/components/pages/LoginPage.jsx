@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
-  Button, Card, Col, Container, Form, FloatingLabel, Row,
+  Container, Row, Col, Card, Image, Form, FloatingLabel, Button,
 } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 
@@ -57,44 +57,44 @@ const LoginPage = () => {
   return (
     <Container fluid className="h-100">
       <Row className="row justify-content-center align-content-center h-100">
-        <Col className="col-12 col-md-8 col-xxl-6">
+        <Col xs={12} md={8} xxl={6}>
           <Card className="shadow-sm">
             <Card.Body className="row p-5">
-              <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
-                <img
-                  src="#"
-                  className="rounded-circle"
-                  alt="Войти"
-                />
-              </div>
+              <Col xs={12} md={6} className="d-flex align-items-center justify-content-center">
+                <Image src="#" className="rounded-circle" alt="Войти" />
+              </Col>
               <Form className="col-12 col-md-6 mt-3 mt-mb-0" onSubmit={formik.handleSubmit}>
                 <h1 className="text-center mb-4">Войти</h1>
-                <FloatingLabel className="mb-3" controlId="username" label="Ваш ник">
+                <FloatingLabel className="mb-3" label="Ваш ник">
                   <Form.Control
-                    ref={inputRef}
+                    id="username"
                     name="username"
-                    type="username"
                     autoComplete="username"
                     placeholder="Ваш ник"
                     value={formik.values.username}
                     onChange={formik.handleChange}
-                    isInvalid={authFailed}
+                    isInvalid={(formik.touched.username && formik.errors.username) || authFailed}
                     disabled={formik.isSubmitting}
+                    ref={inputRef}
                   />
+                  <Form.Control.Feedback type="invalid" tooltip>
+                    {formik.errors.username}
+                  </Form.Control.Feedback>
                 </FloatingLabel>
-                <FloatingLabel className="mb-4" controlId="password" label="Пароль">
+                <FloatingLabel className="mb-4" label="Пароль">
                   <Form.Control
+                    id="password"
                     name="password"
                     type="password"
                     autoComplete="current-password"
                     placeholder="Пароль"
                     value={formik.values.password}
                     onChange={formik.handleChange}
-                    isInvalid={authFailed}
+                    isInvalid={(formik.touched.password && formik.errors.password) || authFailed}
                     disabled={formik.isSubmitting}
                   />
                   <Form.Control.Feedback type="invalid" tooltip>
-                    Неверные имя пользователя или пароль
+                    {authFailed ? 'Неверные имя пользователя или пароль' : formik.errors.password}
                   </Form.Control.Feedback>
                 </FloatingLabel>
                 <Button type="submit" className="w-100 mb-3" variant="outline-primary">Войти</Button>
