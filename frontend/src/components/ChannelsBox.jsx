@@ -4,6 +4,7 @@ import {
   Col, Button, Dropdown, ButtonGroup,
 } from 'react-bootstrap';
 import { PlusSquareFill } from 'react-bootstrap-icons';
+import { useTranslation } from 'react-i18next';
 
 import { actions as channelsActions, selectors as channelsSelectors } from '../slices/channelsSlice.js';
 import getModal from './modals/index.js';
@@ -18,6 +19,7 @@ const renderModal = (modalInfo, hideModal) => {
 };
 
 const ChannelsBox = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const channels = useSelector(channelsSelectors.selectAll);
@@ -29,7 +31,6 @@ const ChannelsBox = () => {
   };
 
   const [modalInfo, setModalInfo] = useState(initialModal);
-  console.log('modalInfo ->', modalInfo);
 
   const showModal = (type, channel = null) => {
     setModalInfo({
@@ -48,7 +49,7 @@ const ChannelsBox = () => {
   return (
     <Col md={2} className="col-4 border-end px-0 bg-light flex-column h-100 d-flex">
       <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
-        <b>Каналы</b>
+        <b>{t('headers.channels')}</b>
         <Button
           className="p-0 text-primary btn btn-group-vertical"
           onClick={() => showModal('add')}
@@ -72,11 +73,15 @@ const ChannelsBox = () => {
               {channel.removable ? (
                 <>
                   <Dropdown.Toggle split className="border-0">
-                    <span className="visually-hidden">Управление каналом</span>
+                    <span className="visually-hidden">{t('channelActions')}</span>
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
-                    <Dropdown.Item onClick={() => showModal('remove', channel)}>Удалить</Dropdown.Item>
-                    <Dropdown.Item onClick={() => showModal('rename', channel)}>Переименовать</Dropdown.Item>
+                    <Dropdown.Item onClick={() => showModal('remove', channel)}>
+                      {t('buttons.remove')}
+                    </Dropdown.Item>
+                    <Dropdown.Item onClick={() => showModal('rename', channel)}>
+                      {t('buttons.rename')}
+                    </Dropdown.Item>
                   </Dropdown.Menu>
                 </>
               ) : null }

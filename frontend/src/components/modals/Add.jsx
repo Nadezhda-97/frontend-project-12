@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { Modal, Form, Button } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -9,6 +10,7 @@ import { selectors as channelsSelectors } from '../../slices/channelsSlice.js';
 import { useChatContext } from '../../hooks/index.jsx';
 
 const Add = ({ hideModal }) => {
+  const { t } = useTranslation();
   const { addChannel } = useChatContext();
   const inputRef = useRef(null);
 
@@ -16,10 +18,11 @@ const Add = ({ hideModal }) => {
   const channelsNames = channels.map((channel) => channel.name);
 
   const schema = yup.object().shape({
-    name: yup.string()
+    name: yup
+      .string()
       .trim()
-      .required('Обязательное поле')
-      .notOneOf(channelsNames, 'Должно быть уникальным'),
+      .required(t('errors.required'))
+      .notOneOf(channelsNames, t('errors.unique')),
   });
 
   useEffect(() => {
@@ -48,7 +51,7 @@ const Add = ({ hideModal }) => {
   return (
     <Modal show centered onHide={hideModal}>
       <Modal.Header closeButton>
-        <Modal.Title className="h4">Добавить канал</Modal.Title>
+        <Modal.Title className="h4">{t('headers.addChannel')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
@@ -63,11 +66,15 @@ const Add = ({ hideModal }) => {
               disabled={formik.isSubmitting}
               isInvalid={formik.errors.name && formik.touched.name}
             />
-            <Form.Label className="visually-hidden" htmlFor="name">Имя канала</Form.Label>
+            <Form.Label className="visually-hidden" htmlFor="name">{t('channelName')}</Form.Label>
             <Form.Control.Feedback type="invalid">{formik.errors.name}</Form.Control.Feedback>
             <div className="d-flex justify-content-end">
-              <Button onClick={hideModal} className="me-2" variant="secondary">Отменить</Button>
-              <Button type="submit" variant="primary" disabled={formik.isSubmitting}>Отправить</Button>
+              <Button onClick={hideModal} className="me-2" variant="secondary">
+                {t('buttons.cancel')}
+              </Button>
+              <Button type="submit" variant="primary" disabled={formik.isSubmitting}>
+                {t('buttons.send')}
+              </Button>
             </div>
           </Form.Group>
         </Form>

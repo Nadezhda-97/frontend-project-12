@@ -1,19 +1,21 @@
 import React, { useEffect, useRef } from 'react';
 import { Form, InputGroup, Button } from 'react-bootstrap';
 import { ArrowRightSquareFill } from 'react-bootstrap-icons';
+import { useTranslation } from 'react-i18next';
 
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 
 import { useChatContext } from '../hooks/index.jsx';
 
-const schema = yup.object().shape({
-  message: yup.string().trim().required('Обязательное поле'),
-});
-
 const SendingForm = ({ currentChannelId }) => {
+  const { t } = useTranslation();
   const { addMessage } = useChatContext();
   const inputRef = useRef(null);
+
+  const schema = yup.object().shape({
+    message: yup.string().trim().required(t('errors.required')),
+  });
 
   useEffect(() => {
     inputRef.current.focus();
@@ -44,8 +46,8 @@ const SendingForm = ({ currentChannelId }) => {
         <InputGroup>
           <Form.Control
             name="message"
-            aria-label="Новое сообщение"
-            placeholder="Введите сообщение..."
+            aria-label={t('newMessage')}
+            placeholder={t('placeholders.addMessage')}
             className="border-0 p-0 ps-2 form-control"
             onChange={formik.handleChange}
             value={formik.values.message}
@@ -53,7 +55,7 @@ const SendingForm = ({ currentChannelId }) => {
           />
           <Button type="submit" disabled={formik.isSubmitting} className="btn-group-vertical">
             <ArrowRightSquareFill size={20} />
-            <span className="visually-hidden">Отправить</span>
+            <span className="visually-hidden">{t('buttons.send')}</span>
           </Button>
         </InputGroup>
       </Form>

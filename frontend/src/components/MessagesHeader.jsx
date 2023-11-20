@@ -1,7 +1,10 @@
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { selectors as channelsSelectors } from '../slices/channelsSlice.js';
 
 const MessagesHeader = ({ currentChannelId, channelMessages }) => {
+  const { t } = useTranslation();
+
   const channels = useSelector(channelsSelectors.selectAll);
   const currentChannel = channels.find((channel) => channel.id === currentChannelId);
 
@@ -10,7 +13,7 @@ const MessagesHeader = ({ currentChannelId, channelMessages }) => {
       <p className="m-0">
         <b>{`# ${currentChannel && currentChannel.name}`}</b>
       </p>
-      <span className="text-muted">{`${channelMessages.length} сообщений`}</span>
+      <span className="text-muted">{t('messages.count', { count: channelMessages.length })}</span>
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { Modal, Form, Button } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -9,6 +10,7 @@ import { useChatContext } from '../../hooks/index.jsx';
 import { selectors as channelsSelectors } from '../../slices/channelsSlice.js';
 
 const Rename = ({ modalInfo, hideModal }) => {
+  const { t } = useTranslation();
   const { renameChannel } = useChatContext();
   const { channel } = modalInfo;
   const inputRef = useRef(null);
@@ -16,17 +18,18 @@ const Rename = ({ modalInfo, hideModal }) => {
   const channels = useSelector(channelsSelectors.selectAll);
   const channelsNames = channels.map(({ name }) => name);
 
+  const schema = yup.object().shape({
+    name: yup
+      .string()
+      .trim()
+      .required(t('errors.required'))
+      .notOneOf(channelsNames, t('errors.unique')),
+  });
+
   useEffect(() => {
     inputRef.current.focus();
     inputRef.current.select();
   }, []);
-
-  const schema = yup.object().shape({
-    name: yup.string()
-      .trim()
-      .required('Обязательное поле')
-      .notOneOf(channelsNames, 'Должно быть уникальным'),
-  });
 
   const formik = useFormik({
     initialValues: {
@@ -49,12 +52,12 @@ const Rename = ({ modalInfo, hideModal }) => {
   return (
     <Modal show centered onHide={hideModal}>
       <Modal.Header closeButton>
-        <Modal.Title>Переименовать канал</Modal.Title>
+        <Modal.Title>{t('headers.renameChannel')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
           <Form.Group>
-            <Form.Label className="visually-hidden">Имя канала</Form.Label>
+            <Form.Label className="visually-hidden">{t('channelName')}</Form.Label>
             <Form.Control
               id="name"
               name="name"
@@ -69,8 +72,10 @@ const Rename = ({ modalInfo, hideModal }) => {
             <Form.Control.Feedback type="invalid">{formik.errors.name}</Form.Control.Feedback>
           </Form.Group>
           <Form.Group className="mb-3 gap-2 d-flex justify-content-end">
-            <Button variant="secondary" onClick={hideModal}>Отменить</Button>
-            <Button variant="primary" type="submit" disabled={formik.isSubmitting}>Отправить</Button>
+            <Button variant="secondary" onClick={hideModal}>{t('buttons.cancel')}</Button>
+            <Button variant="primary" type="submit" disabled={formik.isSubmitting}>
+              {t('buttons.send')}
+            </Button>
           </Form.Group>
         </Form>
       </Modal.Body>
