@@ -1,9 +1,10 @@
 import {
-  BrowserRouter, Routes, Route, Navigate, Link,
+  BrowserRouter, Routes, Route, Navigate,
 } from 'react-router-dom';
-import { Navbar, Container, Button } from 'react-bootstrap';
-import { useTranslation } from 'react-i18next';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
+import Header from './components/Header.jsx';
 import ErrorPage from './components/pages/ErrorPage.jsx';
 import LoginPage from './components/pages/LoginPage.jsx';
 import ChatPage from './components/pages/ChatPage.jsx';
@@ -17,32 +18,23 @@ const Root = ({ children }) => {
   return userData ? children : <Navigate to={routes.loginPage} />;
 };
 
-const App = () => {
-  const { t } = useTranslation();
-  const auth = useAuth();
-
-  return (
-    <BrowserRouter>
-      <div className="h-100">
-        <div className="h-100" id="chat">
-          <div className="d-flex flex-column vh-100">
-            <Navbar className="shadow-sm navbar-expand-lg navbar-light bg-white">
-              <Container>
-                <Navbar.Brand as={Link} to={routes.chatPage}>{t('headers.chat')}</Navbar.Brand>
-                {auth.userData && (<Button onClick={auth.logOut}>{t('buttons.logOut')}</Button>)}
-              </Container>
-            </Navbar>
-            <Routes>
-              <Route path="/" element={(<Root><ChatPage /></Root>)} />
-              <Route path="*" element={<ErrorPage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/signup" element={<SignUpPage />} />
-            </Routes>
-          </div>
+const App = () => (
+  <BrowserRouter>
+    <div className="h-100">
+      <div className="h-100" id="chat">
+        <div className="d-flex flex-column vh-100">
+          <Header />
+          <Routes>
+            <Route path="/" element={(<Root><ChatPage /></Root>)} />
+            <Route path="*" element={<ErrorPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignUpPage />} />
+          </Routes>
         </div>
+        <ToastContainer />
       </div>
-    </BrowserRouter>
-  );
-};
+    </div>
+  </BrowserRouter>
+);
 
 export default App;

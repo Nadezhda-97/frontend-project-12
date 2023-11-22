@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 import { useChatContext } from '../../hooks/index.jsx';
 
@@ -14,8 +15,9 @@ const Remove = ({ modalInfo, hideModal }) => {
     try {
       await removeChannel(channel.id);
       hideModal();
+      toast.success(t('feedback.channelRemoved'));
     } catch (error) {
-      console.error(error.message);
+      toast.error(t('feedback.networkError'));
     }
   };
 

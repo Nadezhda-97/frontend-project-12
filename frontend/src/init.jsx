@@ -1,6 +1,7 @@
 import { Provider } from 'react-redux';
 import { initReactI18next, I18nextProvider } from 'react-i18next';
 import i18next from 'i18next';
+import { io } from 'socket.io-client';
 
 import ChatProvider from './context/ChatProvider.jsx';
 import AuthProvider from './context/AuthProvider.jsx';
@@ -14,7 +15,7 @@ import resources from './locales/locale.js';
 
 const defaultLanguage = 'ru';
 
-const init = async (socket) => {
+const init = async () => {
   const i18nInstance = i18next.createInstance();
   await i18nInstance
     .use(initReactI18next)
@@ -27,6 +28,8 @@ const init = async (socket) => {
         escapeValue: false,
       },
     });
+
+  const socket = io();
 
   socket.on('newMessage', (payload) => {
     store.dispatch(messagesActions.addMessage(payload));

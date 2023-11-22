@@ -55,6 +55,10 @@ export default {
 
     feedback: {
       networkError: 'Ошибка соединения',
+      unknownError: 'Неизвестная ошибка',
+      channelAdded: 'Канал создан',
+      channelRenamed: 'Канал переименован',
+      channelRemoved: 'Канал удалён',
     },
 
     channelName: 'Имя канала',

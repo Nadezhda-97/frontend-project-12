@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Container, Row } from 'react-bootstrap';
+import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 
 import axios from 'axios';
 
@@ -21,6 +23,7 @@ const getAuthHeader = () => {
 };
 
 const ChatPage = () => {
+  const { t } = useTranslation();
   const auth = useAuth();
   const headers = getAuthHeader();
   const dispatch = useDispatch();
@@ -33,8 +36,13 @@ const ChatPage = () => {
         dispatch(channelsActions.setCurrentChannel(data.currentChannelId));
         dispatch(messagesActions.addMessages(data.messages));
       } catch (error) {
-        if (error.isAxiosError && error.response.status === 401) {
+        if (!error.isAxiosError) {
+          toast.error(t('feedback.unknownError'));
+        }
+        if (error.response?.status === 401) {
           auth.logOut();
+        } else {
+          toast.error(t('feedback.networkError'));
         }
       }
     };

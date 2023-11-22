@@ -41,13 +41,15 @@ const LoginPage = () => {
         navigate(routes.chatPage);
       } catch (error) {
         setSubmitting(false);
-        if (error.isAxiosError && error.response.status === 401) {
+        if (!error.isAxiosError) {
+          toast.error(t('feedback.unknownError'));
+        }
+        if (error.response?.status === 401) {
           setAuthFailed(true);
           inputRef.current.select();
-          return;
+        } else {
+          toast.error(t('feedback.networkError'));
         }
-
-        toast.error(t('feedback.networkError'));
       }
     },
   });

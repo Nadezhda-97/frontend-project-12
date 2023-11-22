@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { Modal, Form, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -42,9 +43,10 @@ const Rename = ({ modalInfo, hideModal }) => {
         await renameChannel(values);
         setSubmitting(true);
         hideModal();
+        toast.success(t('feedback.channelRenamed'));
       } catch (error) {
         setSubmitting(false);
-        console.error(error.message);
+        toast.error(t('feedback.networkError'));
       }
     },
   });

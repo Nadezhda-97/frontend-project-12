@@ -54,10 +54,12 @@ const SignUpPage = () => {
         navigate(routes.chatPage);
       } catch (error) {
         setSubmitting(false);
-        if (error.isAxiosError && error.response.status === 409) {
+        if (!error.isAxiosError) {
+          toast.error(t('feedback.unknownError'));
+        }
+        if (error.response.status === 409) {
           setAuthFailed(true);
           inputRef.current.select();
-          return;
         }
         toast.error(t('feedback.networkError'));
       }

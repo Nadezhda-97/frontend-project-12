@@ -8,14 +8,13 @@ const AuthProvider = ({ children }) => {
   });
 
   const logIn = (data) => {
+    localStorage.setItem('userData', JSON.stringify(data));
     setUserData(data);
-    const stringify = JSON.stringify(data);
-    localStorage.setItem('userData', stringify);
   };
 
   const logOut = () => {
-    setUserData(null);
     localStorage.removeItem('userData');
+    setUserData(null);
   };
 
   const auth = useMemo(() => ({ userData, logIn, logOut }), [userData]);

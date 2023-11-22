@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { Form, InputGroup, Button } from 'react-bootstrap';
 import { ArrowRightSquareFill } from 'react-bootstrap-icons';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 import * as yup from 'yup';
 import { useFormik } from 'formik';
@@ -33,7 +34,7 @@ const SendingForm = ({ currentChannelId }) => {
         resetForm();
       } catch (error) {
         setSubmitting(false);
-        console.error(error.message);
+        toast.error(t('feedback.networkError'));
       } finally {
         inputRef.current.focus();
       }

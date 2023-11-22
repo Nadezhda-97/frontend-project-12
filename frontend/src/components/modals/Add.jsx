@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { Modal, Form, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -39,9 +40,10 @@ const Add = ({ hideModal }) => {
         await addChannel(value);
         setSubmitting(true);
         hideModal();
+        toast.success(t('feedback.channelAdded'));
       } catch (error) {
         setSubmitting(false);
-        console.error(error.message);
+        toast.error(t('feedback.networkError'));
       } finally {
         inputRef.current.focus();
       }
