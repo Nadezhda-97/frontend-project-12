@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { Modal, Form, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import leoProfanity from 'leo-profanity';
 
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -38,9 +39,10 @@ const Rename = ({ modalInfo, hideModal }) => {
       name: channel.name,
     },
     validationSchema: schema,
-    onSubmit: async (values, { setSubmitting }) => {
+    onSubmit: async ({ id, name }, { setSubmitting }) => {
+      const filteredName = leoProfanity.clean(name);
       try {
-        await renameChannel(values);
+        await renameChannel({ id, name: filteredName });
         setSubmitting(true);
         hideModal();
         toast.success(t('feedback.channelRenamed'));

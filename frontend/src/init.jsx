@@ -2,6 +2,7 @@ import { Provider } from 'react-redux';
 import { initReactI18next, I18nextProvider } from 'react-i18next';
 import i18next from 'i18next';
 import { io } from 'socket.io-client';
+import leoProfanity from 'leo-profanity';
 
 import ChatProvider from './context/ChatProvider.jsx';
 import AuthProvider from './context/AuthProvider.jsx';
@@ -16,6 +17,9 @@ import resources from './locales/locale.js';
 const defaultLanguage = 'ru';
 
 const init = async () => {
+  const ruDictionary = leoProfanity.getDictionary('ru');
+  leoProfanity.add(ruDictionary);
+
   const i18nInstance = i18next.createInstance();
   await i18nInstance
     .use(initReactI18next)

@@ -3,6 +3,7 @@ import { Form, InputGroup, Button } from 'react-bootstrap';
 import { ArrowRightSquareFill } from 'react-bootstrap-icons';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import leoProfanity from 'leo-profanity';
 
 import * as yup from 'yup';
 import { useFormik } from 'formik';
@@ -27,9 +28,10 @@ const SendingForm = ({ currentChannelId }) => {
       message: '',
     },
     validationSchema: schema,
-    onSubmit: async (values, { setSubmitting, resetForm }) => {
+    onSubmit: async ({ message }, { setSubmitting, resetForm }) => {
+      const filteredMessage = leoProfanity.clean(message);
       try {
-        await addMessage(values);
+        await addMessage({ message: filteredMessage });
         setSubmitting(true);
         resetForm();
       } catch (error) {

@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { Modal, Form, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import leoProfanity from 'leo-profanity';
 
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -35,9 +36,10 @@ const Add = ({ hideModal }) => {
       name: '',
     },
     validationSchema: schema,
-    onSubmit: async (value, { setSubmitting }) => {
+    onSubmit: async ({ name }, { setSubmitting }) => {
+      const filteredName = leoProfanity.clean(name);
       try {
-        await addChannel(value);
+        await addChannel({ name: filteredName });
         setSubmitting(true);
         hideModal();
         toast.success(t('feedback.channelAdded'));
