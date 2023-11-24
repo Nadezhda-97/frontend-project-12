@@ -60,8 +60,9 @@ const SignUpPage = () => {
         if (error.response.status === 409) {
           setAuthFailed(true);
           inputRef.current.select();
+        } else {
+          toast.error(t('feedback.networkError'));
         }
-        toast.error(t('feedback.networkError'));
       }
     },
   });
