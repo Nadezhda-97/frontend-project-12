@@ -54,10 +54,10 @@ const init = async () => {
   });
 
   const rollbarConfig = {
-    accessToken: process.env.REACT_APP_ROLLBAR_ACCESS_TOKEN,
+    accessToken: 'POST_CLIENT_ITEM_ACCESS_TOKEN',
     captureUncaught: true,
     captureUnhandledRejections: true,
-    environment: process.env.NODE_ENV,
+    environment: 'production',
   };
 
   return (
