@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import errorImage from '../../assets/NotFoundImage.svg';
 
 const ErrorPage = () => {
   const { t } = useTranslation();
@@ -9,7 +10,7 @@ const ErrorPage = () => {
       <img
         alt={t('messages.pageNotFound')}
         className="img-fluid h-25"
-        src="#"
+        src={errorImage}
       />
       <h1 className="h4 text-muted">{t('messages.pageNotFound')}</h1>
       <p className="text-muted">

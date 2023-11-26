@@ -12,6 +12,7 @@ import * as yup from 'yup';
 
 import { useAuth } from '../../hooks/index.jsx';
 import routes from '../../routes/routes.js';
+import loginImage from '../../assets/LoginPage.jpg';
 
 const LoginPage = () => {
   const { t } = useTranslation();
@@ -65,7 +66,7 @@ const LoginPage = () => {
           <Card className="shadow-sm">
             <Card.Body className="row p-5">
               <Col xs={12} md={6} className="d-flex align-items-center justify-content-center">
-                <Image src="#" className="rounded-circle" alt={t('headers.logIn')} />
+                <Image src={loginImage} className="rounded-circle" alt={t('headers.logIn')} />
               </Col>
               <Form className="col-12 col-md-6 mt-3 mt-mb-0" onSubmit={formik.handleSubmit}>
                 <h1 className="text-center mb-4">{t('headers.logIn')}</h1>

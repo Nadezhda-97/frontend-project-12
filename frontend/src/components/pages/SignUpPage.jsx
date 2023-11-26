@@ -12,6 +12,7 @@ import * as yup from 'yup';
 
 import { useAuth } from '../../hooks/index.jsx';
 import routes from '../../routes/routes.js';
+import signupImage from '../../assets/SignUpPage.jpg';
 
 const SignUpPage = () => {
   const { t } = useTranslation();
@@ -74,7 +75,7 @@ const SignUpPage = () => {
           <Card className="shadow-sm">
             <Card.Body className="d-flex flex-column flex-md-row justify-content-around align-items-center p-5">
               <div>
-                <Image src="#" className="rounded-circle" alt={t('headers.signup')} />
+                <Image src={signupImage} className="rounded-circle" alt={t('headers.signup')} />
               </div>
               <Form onSubmit={formik.handleSubmit} className="w-50">
                 <h1 className="text-center mb-4">{t('headers.signup')}</h1>
