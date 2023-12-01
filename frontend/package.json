@@ -14,7 +14,6 @@
     "formik": "^2.4.3",
     "i18next": "^23.7.6",
     "leo-profanity": "^1.7.0",
-    "lorem-ipsum": "^2.0.8",
     "react": "^18.2.0",
     "react-bootstrap": "^2.9.1",
     "react-bootstrap-icons": "^1.10.3",
@@ -48,7 +47,6 @@
     ]
   },
   "devDependencies": {
-    "@babel/plugin-transform-private-property-in-object": "^7.23.4",
     "eslint": "^8.47.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-plugin-functional": "^6.0.0",
