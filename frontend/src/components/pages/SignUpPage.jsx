@@ -84,7 +84,7 @@ const SignUpPage = () => {
                     id="username"
                     name="username"
                     autoComplete="username"
-                    placeholder={t('placeholders.username')}
+                    placeholder={t('placeholders.usernameLength')}
                     onChange={formik.handleChange}
                     value={formik.values.username}
                     isInvalid={(formik.touched.username && formik.errors.username) || authFailed}
@@ -105,7 +105,7 @@ const SignUpPage = () => {
                     name="password"
                     type="password"
                     autoComplete="new-password"
-                    placeholder={t('placeholders.password')}
+                    placeholder={t('placeholders.passwordLength')}
                     onChange={formik.handleChange}
                     value={formik.values.password}
                     isInvalid={(formik.touched.password && formik.errors.password) || authFailed}
@@ -125,7 +125,7 @@ const SignUpPage = () => {
                     name="confirmPassword"
                     type="password"
                     autoComplete="new-password"
-                    placeholder={t('placeholders.confirmPassword')}
+                    placeholder={t('placeholders.match')}
                     onChange={formik.handleChange}
                     value={formik.values.confirmPassword}
                     isInvalid={

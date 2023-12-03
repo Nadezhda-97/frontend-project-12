@@ -46,6 +46,9 @@ export default {
       username: 'Имя пользователя',
       confirmPassword: 'Подтвердите пароль',
       addMessage: 'Введите сообщение...',
+      usernameLength: 'От 3 до 20 символов',
+      passwordLength: 'Не менее 6 символов',
+      match: 'Пароли должны совпадать',
     },
 
     links: {
