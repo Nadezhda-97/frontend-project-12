@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
-  Container, Row, Col, Card, Image, Form, FloatingLabel, Button,
+  Container, Row, Col, Card, Image, Form, FormGroup, Button,
 } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
@@ -68,43 +68,44 @@ const LoginPage = () => {
               <Col xs={12} md={6} className="d-flex align-items-center justify-content-center">
                 <Image src={loginImage} className="rounded-circle" alt={t('headers.logIn')} />
               </Col>
-              <Form className="col-12 col-md-6 mt-3 mt-mb-0" onSubmit={formik.handleSubmit}>
+              <Form onSubmit={formik.handleSubmit} className="col-12 col-md-6 mt-3 mt-mb-0">
                 <h1 className="text-center mb-4">{t('headers.logIn')}</h1>
-                <FloatingLabel className="mb-3" label={t('placeholders.nickname')}>
-                  <Form.Control
-                    id="username"
-                    name="username"
-                    autoComplete="username"
-                    placeholder={t('placeholders.nickname')}
-                    value={formik.values.username}
-                    onChange={formik.handleChange}
-                    isInvalid={(formik.touched.username && formik.errors.username) || authFailed}
-                    disabled={formik.isSubmitting}
-                    ref={inputRef}
-                  />
-                  <Form.Control.Feedback type="invalid" tooltip>
-                    {formik.errors.username}
-                  </Form.Control.Feedback>
-                </FloatingLabel>
-                <FloatingLabel className="mb-4" label={t('placeholders.password')}>
-                  <Form.Control
-                    id="password"
-                    name="password"
-                    type="password"
-                    autoComplete="current-password"
-                    placeholder={t('placeholders.password')}
-                    value={formik.values.password}
-                    onChange={formik.handleChange}
-                    isInvalid={(formik.touched.password && formik.errors.password) || authFailed}
-                    disabled={formik.isSubmitting}
-                  />
-                  <Form.Control.Feedback type="invalid" tooltip>
-                    {authFailed ? t('errors.incorrect') : formik.errors.password}
-                  </Form.Control.Feedback>
-                </FloatingLabel>
-                <Button type="submit" className="w-100 mb-3" variant="outline-primary">
-                  {t('buttons.logIn')}
-                </Button>
+                <fieldset disabled={formik.isSubmitting}>
+                  <FormGroup controlId="username" className="mb-3 form-floating">
+                    <Form.Control
+                      name="username"
+                      autoComplete="username"
+                      required
+                      placeholder={t('placeholders.nickname')}
+                      value={formik.values.username}
+                      onChange={formik.handleChange}
+                      isInvalid={authFailed}
+                      ref={inputRef}
+                    />
+                    <Form.Label>{t('placeholders.nickname')}</Form.Label>
+                  </FormGroup>
+                  <FormGroup controlId="password" className="mb-4 form-floating">
+                    <Form.Control
+                      name="password"
+                      autoComplete="current-password"
+                      required
+                      placeholder={t('placeholders.password')}
+                      type="password"
+                      value={formik.values.password}
+                      onChange={formik.handleChange}
+                      isInvalid={authFailed}
+                    />
+                    <Form.Label>{t('placeholders.password')}</Form.Label>
+                    {authFailed ? (
+                      <Form.Control.Feedback type="invalid" tooltip>
+                        {t('errors.incorrect')}
+                      </Form.Control.Feedback>
+                    ) : null}
+                  </FormGroup>
+                  <Button type="submit" className="w-100 mb-3" variant="outline-primary">
+                    {t('buttons.logIn')}
+                  </Button>
+                </fieldset>
               </Form>
             </Card.Body>
             <Card.Footer className="p-4">
