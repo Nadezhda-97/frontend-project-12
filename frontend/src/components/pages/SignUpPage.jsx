@@ -1,6 +1,6 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import {
-  Container, Row, Col, Card, Image, Form, FloatingLabel, Button,
+  Container, Row, Col, Card, Image, Form, FormGroup, Button,
 } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -68,6 +68,10 @@ const SignUpPage = () => {
     },
   });
 
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
+
   return (
     <Container fluid className="h-100">
       <Row className="justify-content-center align-items-center h-100">
@@ -79,68 +83,71 @@ const SignUpPage = () => {
               </div>
               <Form onSubmit={formik.handleSubmit} className="w-50">
                 <h1 className="text-center mb-4">{t('headers.signup')}</h1>
-                <FloatingLabel className="mb-3" label={t('placeholders.username')}>
-                  <Form.Control
-                    id="username"
-                    name="username"
-                    autoComplete="username"
-                    placeholder={t('placeholders.usernameLength')}
-                    onChange={formik.handleChange}
-                    value={formik.values.username}
-                    isInvalid={(formik.touched.username && formik.errors.username) || authFailed}
-                    disabled={formik.isSubmitting}
-                    ref={inputRef}
-                  />
-                  {authFailed ? (
-                    <Form.Control.Feedback type="invalid" />
-                  ) : (
+                <fieldset disabled={formik.isSubmitting}>
+                  <FormGroup controlId="username" className="mb-3 form-floating">
+                    <Form.Control
+                      placeholder={t('placeholders.usernameLength')}
+                      name="username"
+                      autoComplete="username"
+                      required
+                      onChange={formik.handleChange}
+                      value={formik.values.username}
+                      isInvalid={(formik.touched.username && formik.errors.username) || authFailed}
+                      ref={inputRef}
+                    />
+                    <Form.Label>{t('placeholders.username')}</Form.Label>
+                    {authFailed ? (
+                      <Form.Control.Feedback type="invalid" tooltip placement="right" />
+                    ) : (
+                      <Form.Control.Feedback type="invalid" tooltip placement="right">
+                        {formik.errors.username}
+                      </Form.Control.Feedback>
+                    )}
+                  </FormGroup>
+                  <FormGroup controlId="password" className="mb-3 form-floating">
+                    <Form.Control
+                      placeholder={t('placeholders.passwordLength')}
+                      name="password"
+                      aria-describedby="passwordHelpBlock"
+                      required
+                      autoComplete="new-password"
+                      type="password"
+                      onChange={formik.handleChange}
+                      value={formik.values.password}
+                      isInvalid={(formik.touched.password && formik.errors.password) || authFailed}
+                    />
+                    <Form.Label>{t('placeholders.password')}</Form.Label>
+                    {authFailed ? (
+                      <Form.Control.Feedback type="invalid" tooltip />
+                    ) : (
+                      <Form.Control.Feedback type="invalid" tooltip>
+                        {formik.errors.password}
+                      </Form.Control.Feedback>
+                    )}
+                  </FormGroup>
+                  <FormGroup controlId="confirmPassword" className="mb-4 form-floating">
+                    <Form.Control
+                      placeholder={t('placeholders.match')}
+                      name="confirmPassword"
+                      required
+                      autoComplete="new-password"
+                      type="password"
+                      onChange={formik.handleChange}
+                      value={formik.values.confirmPassword}
+                      isInvalid={
+                        (formik.touched.confirmPassword && formik.errors.confirmPassword)
+                        || authFailed
+                      }
+                    />
+                    <Form.Label>{t('placeholders.confirmPassword')}</Form.Label>
                     <Form.Control.Feedback type="invalid" tooltip>
-                      {authFailed ? null : formik.errors.username}
+                      {authFailed ? t('errors.alreadyExists') : formik.errors.confirmPassword}
                     </Form.Control.Feedback>
-                  )}
-                </FloatingLabel>
-                <FloatingLabel className="mb-3" label={t('placeholders.password')}>
-                  <Form.Control
-                    id="password"
-                    name="password"
-                    type="password"
-                    autoComplete="new-password"
-                    placeholder={t('placeholders.passwordLength')}
-                    onChange={formik.handleChange}
-                    value={formik.values.password}
-                    isInvalid={(formik.touched.password && formik.errors.password) || authFailed}
-                    disabled={formik.isSubmitting}
-                  />
-                  {authFailed ? (
-                    <Form.Control.Feedback type="invalid" />
-                  ) : (
-                    <Form.Control.Feedback type="invalid" tooltip>
-                      {formik.errors.password}
-                    </Form.Control.Feedback>
-                  )}
-                </FloatingLabel>
-                <FloatingLabel className="mb-4" label={t('placeholders.confirmPassword')}>
-                  <Form.Control
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    type="password"
-                    autoComplete="new-password"
-                    placeholder={t('placeholders.match')}
-                    onChange={formik.handleChange}
-                    value={formik.values.confirmPassword}
-                    isInvalid={
-                      (formik.touched.confirmPassword && formik.errors.confirmPassword)
-                      || authFailed
-                    }
-                    disabled={formik.isSubmitting}
-                  />
-                  <Form.Control.Feedback type="invalid" tooltip>
-                    {authFailed ? t('errors.alreadyExists') : formik.errors.confirmPassword}
-                  </Form.Control.Feedback>
-                </FloatingLabel>
-                <Button type="submit" className="w-100 mb-3" variant="outline-primary">
-                  {t('buttons.signup')}
-                </Button>
+                  </FormGroup>
+                  <Button type="submit" className="w-100 mb-3" variant="outline-primary">
+                    {t('buttons.signup')}
+                  </Button>
+                </fieldset>
               </Form>
             </Card.Body>
           </Card>
