@@ -48,7 +48,7 @@ const ChatPage = () => {
     };
 
     fetchData();
-  }, [dispatch, auth, headers]);
+  }, [dispatch, auth, headers, t]);
 
   return (
     <Container className="h-100 my-4 overflow-hidden rounded shadow">
