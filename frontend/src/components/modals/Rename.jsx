@@ -60,26 +60,31 @@ const Rename = ({ modalInfo, hideModal }) => {
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
-          <Form.Group>
-            <Form.Label className="visually-hidden">{t('channelName')}</Form.Label>
+          <Form.Group controlId="name">
             <Form.Control
-              id="name"
               name="name"
-              type="text"
+              className="mb-2"
               onChange={formik.handleChange}
               value={formik.values.name}
-              className="mb-2"
+              isInvalid={formik.errors.name && formik.touched.name}
               ref={inputRef}
               disabled={formik.isSubmitting}
-              isInvalid={formik.errors.name && formik.touched.name}
             />
+            <Form.Label className="visually-hidden">{t('channelName')}</Form.Label>
             <Form.Control.Feedback type="invalid">{formik.errors.name}</Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group className="mb-3 gap-2 d-flex justify-content-end">
-            <Button variant="secondary" onClick={hideModal}>{t('buttons.cancel')}</Button>
-            <Button variant="primary" type="submit" disabled={formik.isSubmitting}>
-              {t('buttons.send')}
-            </Button>
+            <div className="d-flex justify-content-end">
+              <Button
+                type="button"
+                className="me-2"
+                variant="secondary"
+                onClick={hideModal}
+              >
+                {t('buttons.cancel')}
+              </Button>
+              <Button type="submit" variant="primary" disabled={formik.isSubmitting}>
+                {t('buttons.send')}
+              </Button>
+            </div>
           </Form.Group>
         </Form>
       </Modal.Body>
