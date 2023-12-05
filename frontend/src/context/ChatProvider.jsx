@@ -8,34 +8,29 @@ const ChatProvider = ({ socket, children }) => {
   const { userData } = useAuth();
   const currentChannelId = useSelector((state) => state.channels.currentChannelId);
 
-  const addMessage = async ({ message }) => {
-    const messageData = {
-      channelId: currentChannelId,
-      text: message,
-      username: userData.username,
-    };
+  const values = useMemo(() => ({
+    addMessage: async ({ message }) => {
+      const messageData = {
+        channelId: currentChannelId,
+        text: message,
+        username: userData.username,
+      };
 
-    await socket.emit('newMessage', messageData);
-  };
-
-  const addChannel = async ({ name }) => {
-    await socket.emit('newChannel', { name });
-  };
-
-  const renameChannel = async ({ id, name }) => {
-    await socket.emit('renameChannel', { id, name });
-  };
-
-  const removeChannel = async (id) => {
-    await socket.emit('removeChannel', { id });
-  };
-
-  const value = useMemo(() => ({
-    addMessage, addChannel, renameChannel, removeChannel,
-  }), [addMessage, addChannel, renameChannel, removeChannel]);
+      await socket.emit('newMessage', messageData);
+    },
+    addChannel: async ({ name }) => {
+      await socket.emit('newChannel', { name });
+    },
+    renameChannel: async ({ id, name }) => {
+      await socket.emit('renameChannel', { id, name });
+    },
+    removeChannel: async (id) => {
+      await socket.emit('removeChannel', { id });
+    },
+  }), [socket, currentChannelId, userData]);
 
   return (
-    <ChatContext.Provider value={value}>
+    <ChatContext.Provider value={values}>
       {children}
     </ChatContext.Provider>
   );
