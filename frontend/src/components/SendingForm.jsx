@@ -55,6 +55,7 @@ const SendingForm = ({ currentChannelId }) => {
             onChange={formik.handleChange}
             value={formik.values.message}
             ref={inputRef}
+            disabled={formik.isSubmitting}
           />
           <Button type="submit" disabled={formik.isSubmitting} className="btn-group-vertical">
             <ArrowRightSquareFill size={20} />

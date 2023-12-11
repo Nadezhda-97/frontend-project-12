@@ -1,11 +1,13 @@
 import React, { useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { ChatContext } from './index.jsx';
 import { useAuth } from '../hooks/index.jsx';
+import { actions as channelsActions } from '../slices/channelsSlice.js';
 
 const ChatProvider = ({ socket, children }) => {
   const { userData } = useAuth();
+  const dispatch = useDispatch();
   const currentChannelId = useSelector((state) => state.channels.currentChannelId);
 
   const values = useMemo(() => ({
@@ -18,8 +20,9 @@ const ChatProvider = ({ socket, children }) => {
 
       await socket.emit('newMessage', messageData);
     },
-    addChannel: async ({ name }) => {
-      await socket.emit('newChannel', { name });
+    addChannel: async (channel) => {
+      const { data } = await socket.emitWithAck('newChannel', channel);
+      dispatch(channelsActions.setCurrentChannel(data.id));
     },
     renameChannel: async ({ id, name }) => {
       await socket.emit('renameChannel', { id, name });
@@ -27,7 +30,7 @@ const ChatProvider = ({ socket, children }) => {
     removeChannel: async (id) => {
       await socket.emit('removeChannel', { id });
     },
-  }), [socket, currentChannelId, userData]);
+  }), [socket, currentChannelId, userData, dispatch]);
 
   return (
     <ChatContext.Provider value={values}>
