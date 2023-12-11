@@ -2,6 +2,7 @@
 
 ### Hexlet tests and linter status:
 [![Actions Status](https://github.com/Nadezhda-97/frontend-project-12/workflows/hexlet-check/badge.svg)](https://github.com/Nadezhda-97/frontend-project-12/actions)
+[![linter-check](https://github.com/Nadezhda-97/frontend-project-12/actions/workflows/linter-check.yml/badge.svg)](https://github.com/Nadezhda-97/frontend-project-12/actions/workflows/linter-check.yml)
 [![Maintainability](https://api.codeclimate.com/v1/badges/85341b814afc489ffa14/maintainability)](https://codeclimate.com/github/Nadezhda-97/frontend-project-12/maintainability)
 
 The app for real-time communication. A very simplified version of Slack chat.
