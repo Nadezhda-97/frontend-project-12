@@ -25,6 +25,8 @@ const Rename = ({ modalInfo, hideModal }) => {
       .string()
       .trim()
       .required(t('errors.required'))
+      .min(3, t('errors.symbolsCount'))
+      .max(20, t('errors.symbolsCount'))
       .notOneOf(channelsNames, t('errors.unique')),
   });
 

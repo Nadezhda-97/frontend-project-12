@@ -25,8 +25,8 @@ const SignUpPage = () => {
       .string()
       .trim()
       .required(t('errors.required'))
-      .min(3, t('errors.usernameLength'))
-      .max(20, t('errors.usernameLength')),
+      .min(3, t('errors.symbolsCount'))
+      .max(20, t('errors.symbolsCount')),
     password: yup
       .string()
       .trim()
