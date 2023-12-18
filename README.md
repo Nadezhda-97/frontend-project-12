@@ -32,4 +32,4 @@ make start
 ```
 
 ### Demo
-Also you can open the chat [here](https://chat-project-1xlx.onrender.com)
+Also you can open the chat [here](https://chat-3xr6.onrender.com)
