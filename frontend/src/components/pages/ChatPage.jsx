@@ -14,8 +14,7 @@ import routes from '../../routes/routes.js';
 import { actions as channelsActions } from '../../slices/channelsSlice.js';
 import { actions as messagesActions } from '../../slices/messagesSlice.js';
 
-const getAuthHeader = () => {
-  const user = JSON.parse(localStorage.getItem('userData'));
+const getAuthHeader = (user) => {
   if (user.token) {
     return { Authorization: `Bearer ${user.token}` };
   }
@@ -24,8 +23,8 @@ const getAuthHeader = () => {
 
 const ChatPage = () => {
   const { t } = useTranslation();
-  const auth = useAuth();
-  const headers = getAuthHeader();
+  const { userData, logOut } = useAuth();
+  const headers = getAuthHeader(userData);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -40,7 +39,8 @@ const ChatPage = () => {
           toast.error(t('feedback.unknownError'));
         }
         if (error.response?.status === 401) {
-          auth.logOut();
+          logOut();
+          toast.error(t('feedback.chatError'));
         } else {
           toast.error(t('feedback.networkError'));
         }
@@ -48,7 +48,7 @@ const ChatPage = () => {
     };
 
     fetchData();
-  }, [dispatch, auth, headers, t]);
+  }, [dispatch, logOut, headers, t]);
 
   return (
     <Container className="h-100 my-4 overflow-hidden rounded shadow">

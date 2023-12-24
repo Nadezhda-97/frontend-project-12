@@ -25,10 +25,10 @@ const App = () => (
         <div className="d-flex flex-column vh-100">
           <Header />
           <Routes>
-            <Route path="/" element={(<Root><ChatPage /></Root>)} />
-            <Route path="*" element={<ErrorPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/signup" element={<SignUpPage />} />
+            <Route path={routes.chatPage} element={(<Root><ChatPage /></Root>)} />
+            <Route path={routes.errorPage} element={<ErrorPage />} />
+            <Route path={routes.loginPage} element={<LoginPage />} />
+            <Route path={routes.signUpPage} element={<SignUpPage />} />
           </Routes>
         </div>
         <ToastContainer />

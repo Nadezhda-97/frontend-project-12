@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  Col, Button, Dropdown, ButtonGroup,
-} from 'react-bootstrap';
+import { useSelector } from 'react-redux';
+import { Col, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
-import { actions as channelsActions, selectors as channelsSelectors } from '../slices/channelsSlice.js';
+import { selectors as channelsSelectors } from '../slices/channelsSlice.js';
 import getModal from './modals/index.js';
+
+import Channel from './Channel.jsx';
 
 const defaultChannelId = 1;
 
@@ -21,7 +21,6 @@ const renderModal = (modalInfo, hideModal) => {
 
 const ChannelsBox = () => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
   const channelsRef = useRef(null);
 
   const channels = useSelector(channelsSelectors.selectAll);
@@ -67,7 +66,7 @@ const ChannelsBox = () => {
         <b>{t('headers.channels')}</b>
         <Button
           type="button"
-          className="p-0 text-white btn btn-group-vertical"
+          className="p-0 btn btn-light text-primary btn-group-vertical"
           onClick={() => showModal('add')}
         >
           <svg
@@ -77,6 +76,7 @@ const ChannelsBox = () => {
             height="20"
             fill="currentColor"
           >
+            <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
             <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
           </svg>
           <span className="visually-hidden">+</span>
@@ -84,33 +84,7 @@ const ChannelsBox = () => {
       </div>
       <ul id="channels-box" ref={channelsRef} className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
         {channels.map((channel) => (
-          <li className="nav-item w-100" key={channel.id}>
-            <Dropdown as={ButtonGroup} className="d-flex">
-              <Button
-                className="w-100 rounded-0 text-start text-truncate"
-                onClick={() => dispatch(channelsActions.setCurrentChannel(channel.id))}
-                variant={channel.id === currentChannelId && 'secondary'}
-              >
-                <span className="me-1">#</span>
-                {channel.name}
-              </Button>
-              {channel.removable ? (
-                <>
-                  <Dropdown.Toggle split className="border-0">
-                    <span className="visually-hidden">{t('channelActions')}</span>
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu>
-                    <Dropdown.Item onClick={() => showModal('remove', channel)}>
-                      {t('buttons.remove')}
-                    </Dropdown.Item>
-                    <Dropdown.Item onClick={() => showModal('rename', channel)}>
-                      {t('buttons.rename')}
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </>
-              ) : null }
-            </Dropdown>
-          </li>
+          <Channel key={channel.id} channel={channel} showModal={showModal} />
         ))}
       </ul>
       {renderModal(modalInfo, hideModal)}

@@ -59,6 +59,7 @@ export default {
     feedback: {
       networkError: 'Ошибка соединения',
       unknownError: 'Неизвестная ошибка',
+      chatError: 'Произошла ошибка при загрузке данных',
       channelAdded: 'Канал создан',
       channelRenamed: 'Канал переименован',
       channelRemoved: 'Канал удалён',

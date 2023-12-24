@@ -96,9 +96,7 @@ const SignUpPage = () => {
                       ref={inputRef}
                     />
                     <Form.Label>{t('placeholders.username')}</Form.Label>
-                    {authFailed ? (
-                      <Form.Control.Feedback type="invalid" tooltip placement="right" />
-                    ) : (
+                    {authFailed ? null : (
                       <Form.Control.Feedback type="invalid" tooltip placement="right">
                         {formik.errors.username}
                       </Form.Control.Feedback>
@@ -117,9 +115,7 @@ const SignUpPage = () => {
                       isInvalid={(formik.touched.password && formik.errors.password) || authFailed}
                     />
                     <Form.Label>{t('placeholders.password')}</Form.Label>
-                    {authFailed ? (
-                      <Form.Control.Feedback type="invalid" tooltip />
-                    ) : (
+                    {authFailed ? null : (
                       <Form.Control.Feedback type="invalid" tooltip>
                         {formik.errors.password}
                       </Form.Control.Feedback>
