@@ -58,7 +58,7 @@ const SendingForm = ({ currentChannelId }) => {
             ref={inputRef}
             disabled={formik.isSubmitting}
           />
-          <Button type="submit" disabled={formik.isSubmitting} className="btn btn-light text-primary btn-group-vertical">
+          <Button type="submit" disabled={formik.isSubmitting || formik.values.message.trim() === ''} className="btn btn-light text-primary btn-group-vertical">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 16 16"
