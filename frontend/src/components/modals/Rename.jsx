@@ -1,24 +1,27 @@
 import React, { useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Form, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import leoProfanity from 'leo-profanity';
 
+import leoProfanity from 'leo-profanity';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-import { useChatContext } from '../../hooks/index.jsx';
 import { selectors as channelsSelectors } from '../../slices/channelsSlice.js';
+import { actions as modalsActions } from '../../slices/modalsSlice.js';
+import { useChatContext } from '../../hooks/index.jsx';
 
-const Rename = ({ modalInfo, hideModal }) => {
+const Rename = () => {
+  const dispatch = useDispatch();
   const { t } = useTranslation();
   const { renameChannel } = useChatContext();
-  const { channel } = modalInfo;
   const inputRef = useRef(null);
 
   const channels = useSelector(channelsSelectors.selectAll);
   const channelsNames = channels.map(({ name }) => name);
+
+  const channelForRename = useSelector((state) => state.modals.channel);
 
   const schema = yup.object().shape({
     name: yup
@@ -37,16 +40,17 @@ const Rename = ({ modalInfo, hideModal }) => {
 
   const formik = useFormik({
     initialValues: {
-      id: channel.id,
-      name: channel.name,
+      id: channelForRename.id,
+      name: channelForRename.name,
     },
     validationSchema: schema,
+    validateOnChange: true,
     onSubmit: async ({ id, name }, { setSubmitting }) => {
       const filteredName = leoProfanity.clean(name);
       try {
         await renameChannel({ id, name: filteredName });
-        setSubmitting(true);
-        hideModal();
+        setSubmitting(false);
+        dispatch(modalsActions.hideModal());
         toast.success(t('feedback.channelRenamed'));
       } catch (error) {
         setSubmitting(false);
@@ -56,7 +60,7 @@ const Rename = ({ modalInfo, hideModal }) => {
   });
 
   return (
-    <Modal show centered onHide={hideModal}>
+    <Modal show centered onHide={() => dispatch(modalsActions.hideModal())}>
       <Modal.Header closeButton>
         <Modal.Title>{t('headers.renameChannel')}</Modal.Title>
       </Modal.Header>
@@ -68,7 +72,7 @@ const Rename = ({ modalInfo, hideModal }) => {
               className="mb-2"
               onChange={formik.handleChange}
               value={formik.values.name}
-              isInvalid={formik.errors.name && formik.touched.name}
+              isInvalid={formik.errors.name}
               ref={inputRef}
               disabled={formik.isSubmitting}
             />
@@ -79,11 +83,11 @@ const Rename = ({ modalInfo, hideModal }) => {
                 type="button"
                 className="me-2"
                 variant="secondary"
-                onClick={hideModal}
+                onClick={() => dispatch(modalsActions.hideModal())}
               >
                 {t('buttons.cancel')}
               </Button>
-              <Button type="submit" variant="primary" disabled={formik.isSubmitting}>
+              <Button type="submit" variant="primary" disabled={formik.isSubmitting || !formik.isValid}>
                 {t('buttons.send')}
               </Button>
             </div>

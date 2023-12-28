@@ -90,17 +90,18 @@ const SignUpPage = () => {
                       name="username"
                       autoComplete="username"
                       required
+                      onBlur={formik.handleBlur}
                       onChange={formik.handleChange}
                       value={formik.values.username}
                       isInvalid={(formik.touched.username && formik.errors.username) || authFailed}
                       ref={inputRef}
                     />
                     <Form.Label>{t('placeholders.username')}</Form.Label>
-                    {authFailed ? null : (
+                    {formik.touched.username && formik.errors.username ? (
                       <Form.Control.Feedback type="invalid" tooltip placement="right">
                         {formik.errors.username}
                       </Form.Control.Feedback>
-                    )}
+                    ) : null}
                   </FormGroup>
                   <FormGroup controlId="password" className="mb-3 form-floating">
                     <Form.Control
@@ -110,16 +111,17 @@ const SignUpPage = () => {
                       required
                       autoComplete="new-password"
                       type="password"
+                      onBlur={formik.handleBlur}
                       onChange={formik.handleChange}
                       value={formik.values.password}
                       isInvalid={(formik.touched.password && formik.errors.password) || authFailed}
                     />
                     <Form.Label>{t('placeholders.password')}</Form.Label>
-                    {authFailed ? null : (
+                    {formik.touched.password && formik.errors.password ? (
                       <Form.Control.Feedback type="invalid" tooltip>
                         {formik.errors.password}
                       </Form.Control.Feedback>
-                    )}
+                    ) : null}
                   </FormGroup>
                   <FormGroup controlId="confirmPassword" className="mb-4 form-floating">
                     <Form.Control
@@ -128,6 +130,7 @@ const SignUpPage = () => {
                       required
                       autoComplete="new-password"
                       type="password"
+                      onBlur={formik.handleBlur}
                       onChange={formik.handleChange}
                       value={formik.values.confirmPassword}
                       isInvalid={
@@ -137,7 +140,8 @@ const SignUpPage = () => {
                     />
                     <Form.Label>{t('placeholders.confirmPassword')}</Form.Label>
                     <Form.Control.Feedback type="invalid" tooltip>
-                      {authFailed ? t('errors.alreadyExists') : formik.errors.confirmPassword}
+                      {formik.touched.confirmPassword && formik.errors.confirmPassword
+                        ? formik.errors.confirmPassword : t('errors.alreadyExists')}
                     </Form.Control.Feedback>
                   </FormGroup>
                   <Button type="submit" className="w-100 mb-3" variant="outline-primary">

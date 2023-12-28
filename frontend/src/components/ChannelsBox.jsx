@@ -1,25 +1,26 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useRef, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Col, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 import { selectors as channelsSelectors } from '../slices/channelsSlice.js';
+import { actions as modalsActions } from '../slices/modalsSlice.js';
 import getModal from './modals/index.js';
 
 import Channel from './Channel.jsx';
 
 const defaultChannelId = 1;
 
-const renderModal = (modalInfo, hideModal) => {
-  if (modalInfo.type === null) {
+const renderModal = (modalType) => {
+  if (!modalType) {
     return null;
   }
-
-  const Modal = getModal(modalInfo.type);
-  return <Modal modalInfo={modalInfo} hideModal={hideModal} />;
+  const Modal = getModal(modalType);
+  return <Modal />;
 };
 
 const ChannelsBox = () => {
+  const dispatch = useDispatch();
   const { t } = useTranslation();
   const channelsRef = useRef(null);
 
@@ -29,26 +30,7 @@ const ChannelsBox = () => {
   const channelsIds = useSelector(channelsSelectors.selectIds);
   const lastChannelId = channelsIds[channelsIds.length - 1];
 
-  const initialModal = {
-    type: null,
-    channel: null,
-  };
-
-  const [modalInfo, setModalInfo] = useState(initialModal);
-
-  const showModal = (type, channel = null) => {
-    setModalInfo({
-      type,
-      channel,
-    });
-  };
-
-  const hideModal = () => {
-    setModalInfo({
-      type: null,
-      channel: null,
-    });
-  };
+  const modalType = useSelector((state) => state.modals.modalType);
 
   useEffect(() => {
     if (currentChannelId === defaultChannelId) {
@@ -67,7 +49,7 @@ const ChannelsBox = () => {
         <Button
           type="button"
           className="p-0 btn btn-light text-primary btn-group-vertical"
-          onClick={() => showModal('add')}
+          onClick={() => dispatch(modalsActions.showModal({ modalType: 'add' }))}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -84,10 +66,10 @@ const ChannelsBox = () => {
       </div>
       <ul id="channels-box" ref={channelsRef} className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
         {channels.map((channel) => (
-          <Channel key={channel.id} channel={channel} showModal={showModal} />
+          <Channel key={channel.id} channel={channel} />
         ))}
       </ul>
-      {renderModal(modalInfo, hideModal)}
+      {renderModal(modalType)}
     </Col>
   );
 };

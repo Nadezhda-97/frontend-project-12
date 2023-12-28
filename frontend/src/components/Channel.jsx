@@ -4,8 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
 import { actions as channelsActions } from '../slices/channelsSlice.js';
+import { actions as modalsActions } from '../slices/modalsSlice.js';
 
-const Channel = ({ channel, showModal }) => {
+const Channel = ({ channel }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
@@ -29,10 +30,10 @@ const Channel = ({ channel, showModal }) => {
               <span className="visually-hidden">{t('channelActions')}</span>
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              <Dropdown.Item onClick={() => showModal('remove', channel)}>
+              <Dropdown.Item onClick={() => dispatch(modalsActions.showModal({ modalType: 'remove', channel }))}>
                 {t('buttons.remove')}
               </Dropdown.Item>
-              <Dropdown.Item onClick={() => showModal('rename', channel)}>
+              <Dropdown.Item onClick={() => dispatch(modalsActions.showModal({ modalType: 'rename', channel }))}>
                 {t('buttons.rename')}
               </Dropdown.Item>
             </Dropdown.Menu>

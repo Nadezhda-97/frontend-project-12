@@ -26,9 +26,9 @@ const App = () => (
           <Header />
           <Routes>
             <Route path={routes.chatPage} element={(<Root><ChatPage /></Root>)} />
-            <Route path={routes.errorPage} element={<ErrorPage />} />
             <Route path={routes.loginPage} element={<LoginPage />} />
             <Route path={routes.signUpPage} element={<SignUpPage />} />
+            <Route path="*" element={<ErrorPage />} />
           </Routes>
         </div>
         <ToastContainer />

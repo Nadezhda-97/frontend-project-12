@@ -1,17 +1,19 @@
 import React, { useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Form, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import leoProfanity from 'leo-profanity';
 
+import leoProfanity from 'leo-profanity';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { selectors as channelsSelectors } from '../../slices/channelsSlice.js';
+import { actions as modalsActions } from '../../slices/modalsSlice.js';
 import { useChatContext } from '../../hooks/index.jsx';
 
-const Add = ({ hideModal }) => {
+const Add = () => {
+  const dispatch = useDispatch();
   const { t } = useTranslation();
   const { addChannel } = useChatContext();
   const inputRef = useRef(null);
@@ -38,12 +40,13 @@ const Add = ({ hideModal }) => {
       name: '',
     },
     validationSchema: schema,
+    validateOnChange: true,
     onSubmit: async ({ name }, { setSubmitting }) => {
       const filteredName = leoProfanity.clean(name);
       try {
         await addChannel({ name: filteredName });
-        setSubmitting(true);
-        hideModal();
+        setSubmitting(false);
+        dispatch(modalsActions.hideModal());
         toast.success(t('feedback.channelAdded'));
       } catch (error) {
         setSubmitting(false);
@@ -55,7 +58,7 @@ const Add = ({ hideModal }) => {
   });
 
   return (
-    <Modal show centered onHide={hideModal}>
+    <Modal show centered onHide={() => dispatch(modalsActions.hideModal())}>
       <Modal.Header closeButton>
         <Modal.Title className="h4">{t('headers.addChannel')}</Modal.Title>
       </Modal.Header>
@@ -70,15 +73,15 @@ const Add = ({ hideModal }) => {
               onChange={formik.handleChange}
               ref={inputRef}
               disabled={formik.isSubmitting}
-              isInvalid={formik.errors.name && formik.touched.name}
+              isInvalid={formik.errors.name}
             />
             <Form.Label className="visually-hidden" htmlFor="name">{t('channelName')}</Form.Label>
             <Form.Control.Feedback type="invalid">{formik.errors.name}</Form.Control.Feedback>
             <div className="d-flex justify-content-end">
-              <Button onClick={hideModal} className="me-2" variant="secondary">
+              <Button onClick={() => dispatch(modalsActions.hideModal())} className="me-2" variant="secondary">
                 {t('buttons.cancel')}
               </Button>
-              <Button type="submit" variant="primary" disabled={formik.isSubmitting}>
+              <Button type="submit" variant="primary" disabled={formik.isSubmitting || !formik.isValid}>
                 {t('buttons.send')}
               </Button>
             </div>

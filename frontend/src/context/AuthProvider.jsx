@@ -3,7 +3,7 @@ import { AuthContext } from './index.jsx';
 
 const AuthProvider = ({ children }) => {
   const user = JSON.parse(localStorage.getItem('userData'));
-  const [userData, setUserData] = useState(user || null);
+  const [userData, setUserData] = useState(user);
 
   const logIn = (data) => {
     localStorage.setItem('userData', JSON.stringify(data));

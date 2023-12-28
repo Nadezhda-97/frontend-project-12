@@ -1,6 +1,8 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+
 import errorImage from '../../assets/NotFoundImage.svg';
+import routes from '../../routes/routes.js';
 
 const ErrorPage = () => {
   const { t } = useTranslation();
@@ -15,7 +17,7 @@ const ErrorPage = () => {
       <h1 className="h4 text-muted">{t('messages.pageNotFound')}</h1>
       <p className="text-muted">
         {t('messages.redirect')}
-        <a href="/login">{t('links.toMainPage')}</a>
+        <a href={routes.chatPage}>{t('links.toMainPage')}</a>
       </p>
     </div>
   );

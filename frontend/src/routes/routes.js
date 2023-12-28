@@ -7,5 +7,4 @@ export default {
   chatPage: '/',
   loginPage: '/login',
   signUpPage: '/signup',
-  errorPage: '*',
 };

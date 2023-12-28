@@ -13,7 +13,8 @@ const SendingForm = ({ currentChannelId }) => {
   const { t } = useTranslation();
   const { addMessage } = useChatContext();
   const inputRef = useRef(null);
-  const [delivery, setDelivery] = useState(false);
+
+  const [delivery, setDelivery] = useState('');
 
   const schema = yup.object().shape({
     message: yup.string().trim().required(t('errors.required')),
@@ -32,12 +33,11 @@ const SendingForm = ({ currentChannelId }) => {
       const filteredMessage = leoProfanity.clean(message);
       try {
         await addMessage({ message: filteredMessage });
-        setDelivery(true);
-        setSubmitting(true);
+        setDelivery(formik.values.message);
+        setSubmitting(false);
         resetForm();
-        setTimeout(() => setDelivery(false), 2000);
       } catch (error) {
-        setDelivery(false);
+        setDelivery(formik.values.message);
         setSubmitting(false);
         toast.error(t('feedback.networkError'));
       }
