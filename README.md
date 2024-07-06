@@ -7,6 +7,10 @@
 
 The app for real-time communication. A very simplified version of Slack chat.
 
+The app has three main pages: for login of already registered users, for registration of new users and the chat itself. There are two main channels for communication on the chat page – «general» and «random». At the same time, the user can create additional channels, as well as rename and delete them.
+
+All messages are filtered for obscene words.
+
 ### Requirements
 You need to install Node.js version 13.2.0 or higher.
 
